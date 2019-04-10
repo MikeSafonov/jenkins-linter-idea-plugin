@@ -1,0 +1,1 @@
+# jenkins-linter-idea-plugin
