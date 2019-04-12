@@ -1,16 +1,28 @@
 package com.github.mikesafonov.jenkins.linter
 
-import com.intellij.util.io.HttpRequests
+import org.apache.commons.httpclient.HttpClient
+import org.apache.commons.httpclient.NameValuePair
+import org.apache.commons.httpclient.methods.PostMethod
 
 /**
  * @author Mike Safonov
  */
-class JenkinsLinter(val jenkinsLinterSettings: JenkinsLinterSettings) {
+class JenkinsLinter {
 
-    fun lint(fileContent: String) {
+    private val jenkinsLinterSettings = JenkinsLinterSettings.getInstance()
 
-        val requestString = "${jenkinsLinterSettings.jenkinsUrl}?jenkinsfile=$fileContent"
+    fun lint(fileContent: String): LinterResponse {
 
-        println(HttpRequests.post(requestString, null).readString())
+        val postMethod = buildPost(fileContent)
+        val methodResponseCode = HttpClient().executeMethod(postMethod)
+
+        return LinterResponse(methodResponseCode, postMethod.responseBodyAsString)
+    }
+
+    private fun buildPost(fileContent: String): PostMethod {
+        val data = arrayOf(NameValuePair("jenkinsfile", fileContent))
+        val postMethod = PostMethod("${jenkinsLinterSettings.jenkinsUrl}/pipeline-model-converter/validate")
+        postMethod.setRequestBody(data)
+        return postMethod
     }
 }
