@@ -17,18 +17,18 @@
         <applicationConfigurable instance="com.github.mikesafonov.jenkins.linter.JenkinsLinterConfigurationPanel"
                                  groupId="tools"
                                  groupWeight="130" displayName="Jenkins Linter"/>
-        <applicationService serviceInterface="com.github.mikesafonov.jenkins.linter.JenkinsLinterSettings"
-                            serviceImplementation="com.github.mikesafonov.jenkins.linter.JenkinsLinterSettings"/>
+        <applicationService
+                serviceImplementation="com.github.mikesafonov.jenkins.linter.JenkinsLinterSettings"/>
 
         <toolWindow id="Jenkins Linter" anchor="bottom" factoryClass="com.github.mikesafonov.jenkins.linter.JenkinsLinterToolWindowFactory"
-                    icon="icons/jenkins16.svg"/>
+                    icon="icons/jenkins13.svg"/>
     </extensions>
 
     <actions>
         <action id="com.github.mikesafonov.jenkins.linter.PerformJenkinsLinterAction"
                 class="com.github.mikesafonov.jenkins.linter.PerformJenkinsLinterAction"
                 text="Validate by Jenkins Linter"
-                description="Validate by Jenkins Linter" icon="icons/jenkins16.svg">
+                description="Validate by jenkins linter" icon="icons/jenkins13.svg">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>

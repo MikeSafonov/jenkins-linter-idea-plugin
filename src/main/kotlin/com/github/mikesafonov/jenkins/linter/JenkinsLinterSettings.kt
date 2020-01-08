@@ -13,6 +13,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 @State(name = "JenkinsLinterSettings", storages = [Storage("jenkins-linter.xml")])
 class JenkinsLinterSettings : PersistentStateComponent<JenkinsLinterSettings> {
     var jenkinsUrl = ""
+    var useCrumb = true
 
     companion object {
         fun getInstance() = ServiceManager.getService(JenkinsLinterSettings::class.java)!!

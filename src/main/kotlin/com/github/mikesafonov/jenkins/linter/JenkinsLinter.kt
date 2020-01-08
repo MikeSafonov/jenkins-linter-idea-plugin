@@ -9,8 +9,6 @@ import org.apache.commons.httpclient.methods.PostMethod
  */
 class JenkinsLinter {
 
-    private val jenkinsLinterSettings = JenkinsLinterSettings.getInstance()
-
     fun lint(fileContent: String): LinterResponse {
 
         val postMethod = buildPost(fileContent)
@@ -20,6 +18,7 @@ class JenkinsLinter {
     }
 
     private fun buildPost(fileContent: String): PostMethod {
+        val jenkinsLinterSettings = JenkinsLinterSettings.getInstance()
         val data = arrayOf(NameValuePair("jenkinsfile", fileContent))
         val postMethod = PostMethod("${jenkinsLinterSettings.jenkinsUrl}/pipeline-model-converter/validate")
         postMethod.setRequestBody(data)

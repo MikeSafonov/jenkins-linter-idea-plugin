@@ -23,7 +23,7 @@ class JenkinsLinterToolWindowFactory : ToolWindowFactory, DumbAware {
     }
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val createContent = ContentFactory.SERVICE.getInstance().createContent(panel, "Helloo", false)
+        val createContent = ContentFactory.SERVICE.getInstance().createContent(panel, "Jenkins Linter", false)
         toolWindow.contentManager.addContent(createContent)
     }
 }
