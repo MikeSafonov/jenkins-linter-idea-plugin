@@ -1,15 +1,57 @@
 package com.github.mikesafonov.jenkins.linter
 
-import org.apache.commons.httpclient.HttpClient
-import org.apache.commons.httpclient.NameValuePair
-import org.apache.commons.httpclient.methods.PostMethod
+import org.apache.http.auth.AuthScope
+import org.apache.http.auth.UsernamePasswordCredentials
+import org.apache.http.client.HttpClient
+import org.apache.http.client.methods.HttpPost
+import org.apache.http.client.protocol.HttpClientContext
+import org.apache.http.entity.mime.MultipartEntityBuilder
+import org.apache.http.impl.client.BasicCredentialsProvider
+import org.apache.http.impl.client.HttpClients
+import org.apache.http.util.EntityUtils
+import java.nio.charset.StandardCharsets
+
 
 /**
  * @author Mike Safonov
  */
 class JenkinsLinter {
 
-    private val httpClient : HttpClient = HttpClient()
+    private val url: String
+    private val httpClient: HttpClient
+    private val useCrumb: Boolean
+    private val crumbIssuer: JenkinsCrumbIssuer?
+    private val context: HttpClientContext?
+
+    constructor(url: String, useCrumb: Boolean) {
+        this.url = url
+        httpClient = HttpClients.createDefault()
+        this.useCrumb = useCrumb
+        context = null
+        crumbIssuer = if (useCrumb) {
+            JenkinsCrumbIssuer(url, httpClient, context)
+        } else {
+            null
+        }
+    }
+
+    constructor(url: String, username: String, password: String, useCrumb: Boolean) {
+        this.url = url
+        this.useCrumb = useCrumb
+        httpClient = HttpClients.createDefault()
+        val provider = BasicCredentialsProvider()
+        provider.setCredentials(
+                AuthScope.ANY,
+                UsernamePasswordCredentials(username, password))
+        context = HttpClientContext.create()
+        context.credentialsProvider = provider
+
+        crumbIssuer = if (useCrumb) {
+            JenkinsCrumbIssuer(url, httpClient, context)
+        } else {
+            null
+        }
+    }
 
     /**
      * @param fileContent linting file content
@@ -18,16 +60,25 @@ class JenkinsLinter {
     fun lint(fileContent: String): LinterResponse {
 
         val postMethod = buildPost(fileContent)
-        val methodResponseCode = httpClient.executeMethod(postMethod)
+        val response = if (context != null) {
+            httpClient.execute(postMethod, context)
+        } else {
+            httpClient.execute(postMethod)
+        }
+        val content = EntityUtils.toString(response.entity, StandardCharsets.UTF_8)
 
-        return LinterResponse(methodResponseCode, postMethod.responseBodyAsString)
+        return LinterResponse(response.statusLine.statusCode, content)
     }
 
-    private fun buildPost(fileContent: String): PostMethod {
-        val jenkinsLinterSettings = JenkinsLinterSettings.getInstance()
-        val data = arrayOf(NameValuePair("jenkinsfile", fileContent))
-        val postMethod = PostMethod("${jenkinsLinterSettings.jenkinsUrl}/pipeline-model-converter/validate")
-        postMethod.setRequestBody(data)
+    private fun buildPost(fileContent: String): HttpPost {
+        val postMethod = HttpPost("${url}/pipeline-model-converter/validate")
+        if (crumbIssuer != null) {
+            val crumb = crumbIssuer.get()
+            postMethod.addHeader(crumb.crumbRequestField, crumb.crumb)
+        }
+        postMethod.entity = MultipartEntityBuilder.create()
+                .addTextBody("jenkinsfile", fileContent)
+                .build()
         return postMethod
     }
 }

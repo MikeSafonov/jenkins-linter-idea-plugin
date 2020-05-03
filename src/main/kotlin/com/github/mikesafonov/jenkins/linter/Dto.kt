@@ -9,3 +9,5 @@ data class LinterResponse(val code: Int, val message: String) {
         get() = code == 200
 }
 
+data class JenkinsCrumb(val crumb: String, val crumbRequestField: String)
+

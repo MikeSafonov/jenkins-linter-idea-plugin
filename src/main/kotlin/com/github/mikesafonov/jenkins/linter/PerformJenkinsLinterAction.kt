@@ -20,7 +20,16 @@ class PerformJenkinsLinterAction : AnAction() {
             if (linterToolWindow.isAvailable) {
                 reactivateToolWindow(linterToolWindow)
             }
-            val linterResponse = JenkinsLinter().lint(fileContent)
+            val settings = JenkinsLinterSettings.getInstance()
+            val credentials = JenkinsLinterCredentials.get()
+            val linter = if (credentials != null) {
+                JenkinsLinter(settings.jenkinsUrl, credentials.userName!!,
+                        credentials.getPasswordAsString()!!, settings.useCrumb)
+            } else {
+                JenkinsLinter(settings.jenkinsUrl, settings.useCrumb)
+            }
+
+            val linterResponse = linter.lint(fileContent)
             Logger.getInstance(PerformJenkinsLinterAction::class.java).debug(linterResponse.message)
             JenkinsLinterToolWindowFactory.panel.add(linterResponse)
         }
@@ -39,7 +48,7 @@ class PerformJenkinsLinterAction : AnAction() {
         } else null
     }
 
-    private fun reactivateToolWindow(linterToolWindow : ToolWindow){
+    private fun reactivateToolWindow(linterToolWindow: ToolWindow) {
         if (linterToolWindow is ToolWindowImpl) {
             linterToolWindow.ensureContentInitialized()
         }
