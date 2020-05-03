@@ -3,6 +3,8 @@ package com.github.mikesafonov.jenkins.linter
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.impl.ToolWindowImpl
 
 /**
@@ -13,19 +15,14 @@ class PerformJenkinsLinterAction : AnAction() {
 
     override fun actionPerformed(event: AnActionEvent) {
         val fileContent = readFileContent(event)
-        if (fileContent != null) {
+        fileContent?.apply {
             val linterToolWindow = JenkinsLinterToolWindowFactory.getLinterToolWindow(event.project!!)
             if (linterToolWindow.isAvailable) {
-                if (linterToolWindow is ToolWindowImpl) {
-                    linterToolWindow.ensureContentInitialized()
-                }
-                linterToolWindow.activate(null)
+                reactivateToolWindow(linterToolWindow)
             }
             val linterResponse = JenkinsLinter().lint(fileContent)
-            println(linterResponse.message)
+            Logger.getInstance(PerformJenkinsLinterAction::class.java).debug(linterResponse.message)
             JenkinsLinterToolWindowFactory.panel.add(linterResponse)
-        } else {
-            println("No data to validate")
         }
     }
 
@@ -40,5 +37,12 @@ class PerformJenkinsLinterAction : AnAction() {
         return if (virtualFile != null) {
             String(virtualFile.contentsToByteArray())
         } else null
+    }
+
+    private fun reactivateToolWindow(linterToolWindow : ToolWindow){
+        if (linterToolWindow is ToolWindowImpl) {
+            linterToolWindow.ensureContentInitialized()
+        }
+        linterToolWindow.activate(null)
     }
 }
