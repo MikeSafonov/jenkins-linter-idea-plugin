@@ -9,10 +9,16 @@ import org.apache.commons.httpclient.methods.PostMethod
  */
 class JenkinsLinter {
 
+    private val httpClient : HttpClient = HttpClient()
+
+    /**
+     * @param fileContent linting file content
+     * @return lint response
+     */
     fun lint(fileContent: String): LinterResponse {
 
         val postMethod = buildPost(fileContent)
-        val methodResponseCode = HttpClient().executeMethod(postMethod)
+        val methodResponseCode = httpClient.executeMethod(postMethod)
 
         return LinterResponse(methodResponseCode, postMethod.responseBodyAsString)
     }

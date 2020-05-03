@@ -31,8 +31,7 @@ class PerformJenkinsLinterAction : AnAction() {
 
     override fun update(e: AnActionEvent) {
         val virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE)
-        val visible = virtualFile != null
-        e.presentation.isEnabledAndVisible = visible
+        e.presentation.isEnabledAndVisible = virtualFile != null
     }
 
 
@@ -42,6 +41,4 @@ class PerformJenkinsLinterAction : AnAction() {
             String(virtualFile.contentsToByteArray())
         } else null
     }
-
-
 }

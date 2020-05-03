@@ -6,6 +6,8 @@ import com.intellij.credentialStore.generateServiceName
 import com.intellij.ide.passwordSafe.PasswordSafe
 
 /**
+ * Linter credentials
+ *
  * @author Mike Safonov
  */
 object JenkinsLinterCredentials {
@@ -21,5 +23,6 @@ object JenkinsLinterCredentials {
         PasswordSafe.instance.set(attributes, credentials)
     }
 
-    private fun credentialAttributes() = CredentialAttributes(generateServiceName("Jenkins linter", "jenkins instance"))
+    private fun credentialAttributes() = CredentialAttributes(generateServiceName("Jenkins linter",
+            "jenkins instance"))
 }
