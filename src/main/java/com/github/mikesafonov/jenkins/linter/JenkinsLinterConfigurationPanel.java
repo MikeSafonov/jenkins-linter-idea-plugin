@@ -43,7 +43,11 @@ public class JenkinsLinterConfigurationPanel implements SearchableConfigurable {
 
     @Override
     public void apply() {
-        jenkinsLinterSettings.setJenkinsUrl(jenkinsUrlTF.getText());
+        String url = jenkinsUrlTF.getText();
+        if(url.endsWith("/")){
+            url = url.substring(0, url.length() - 1);
+        }
+        jenkinsLinterSettings.setJenkinsUrl(url);
         jenkinsLinterSettings.setUseCrumb(useCrumbCB.isSelected());
         JenkinsLinterCredentials.INSTANCE.store(usernameTF.getText(), passwordTF.getPassword());
     }
