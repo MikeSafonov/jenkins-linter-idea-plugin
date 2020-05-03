@@ -3,10 +3,12 @@ package com.github.mikesafonov.jenkins.linter;
 import com.intellij.credentialStore.Credentials;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.util.Comparing;
+import com.intellij.ui.JBColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Mike Safonov
@@ -17,7 +19,23 @@ public class JenkinsLinterConfigurationPanel implements SearchableConfigurable {
     private JPanel jpanel;
     private JTextField usernameTF;
     private JPasswordField passwordTF;
+    private JButton checkConnectionBtn;
+    private JLabel checkLabel;
     private JenkinsLinterSettings jenkinsLinterSettings;
+    private JenkinsConnectionVerifyer verifyer;
+
+    public JenkinsLinterConfigurationPanel() {
+        verifyer = new JenkinsConnectionVerifyer();
+        checkConnectionBtn.addActionListener(actionEvent -> {
+            if(verifyer.verify(jenkinsUrlTF.getText())){
+                checkLabel.setForeground(JBColor.GREEN);
+                checkLabel.setText("Success!");
+            } else {
+                checkLabel.setForeground(JBColor.RED);
+                checkLabel.setText("Error!");
+            }
+        });
+    }
 
     @Nullable
     @Override
@@ -32,12 +50,12 @@ public class JenkinsLinterConfigurationPanel implements SearchableConfigurable {
         Credentials credentials = JenkinsLinterCredentials.INSTANCE.get();
         if (credentials != null) {
             return !Comparing.equal(jenkinsUrlTF.getText(), jenkinsLinterSettings.getJenkinsUrl())
-                    || !Comparing.equal(usernameTF.getText(), credentials.getUserName())
-                    || !Comparing.equal(passwordTF.getPassword(), credentials.getPasswordAsString())
-                    || !Comparing.equal(useCrumbCB.isSelected(), jenkinsLinterSettings.getUseCrumb());
+                || !Comparing.equal(usernameTF.getText(), credentials.getUserName())
+                || !Comparing.equal(passwordTF.getPassword(), credentials.getPasswordAsString())
+                || !Comparing.equal(useCrumbCB.isSelected(), jenkinsLinterSettings.getUseCrumb());
         } else {
             return !Comparing.equal(jenkinsUrlTF.getText(), jenkinsLinterSettings.getJenkinsUrl())
-                    || !Comparing.equal(useCrumbCB.isSelected(), jenkinsLinterSettings.getUseCrumb());
+                || !Comparing.equal(useCrumbCB.isSelected(), jenkinsLinterSettings.getUseCrumb());
         }
     }
 
