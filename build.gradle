@@ -8,7 +8,7 @@ group 'com.github.mikesafonov'
 version '1.0.0'
 
 wrapper{
-    gradleVersion = "5.3.1"
+    gradleVersion = "6.7.1"
 }
 
 repositories {
