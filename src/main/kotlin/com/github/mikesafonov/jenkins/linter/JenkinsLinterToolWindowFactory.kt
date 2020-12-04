@@ -17,7 +17,7 @@ class JenkinsLinterToolWindowFactory : ToolWindowFactory, DumbAware {
         val panel = LinterResponsePanel()
 
         fun getLinterToolWindow(project: Project): ToolWindow {
-            return ToolWindowManager.getInstance(project).getToolWindow("Jenkins Linter")
+            return ToolWindowManager.getInstance(project).getToolWindow("Jenkins Linter")!!
         }
 
     }

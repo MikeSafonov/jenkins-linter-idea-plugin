@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.wm.ToolWindow
-import com.intellij.openapi.wm.impl.ToolWindowImpl
 
 /**
  * @author Mike Safonov
@@ -49,9 +48,6 @@ class PerformJenkinsLinterAction : AnAction() {
     }
 
     private fun reactivateToolWindow(linterToolWindow: ToolWindow) {
-        if (linterToolWindow is ToolWindowImpl) {
-            linterToolWindow.ensureContentInitialized()
-        }
         linterToolWindow.activate(null)
     }
 }
