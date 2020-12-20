@@ -13,8 +13,10 @@ import com.intellij.openapi.wm.ToolWindow
 
 class PerformJenkinsLinterAction : AnAction() {
 
+    private val reader = FileContentReader()
+
     override fun actionPerformed(event: AnActionEvent) {
-        val fileContent = readFileContent(event)
+        val fileContent = reader.read(event)
         fileContent?.apply {
             val linterToolWindow = JenkinsLinterToolWindowFactory.getLinterToolWindow(event.project!!)
             if (linterToolWindow.isAvailable) {
@@ -31,14 +33,6 @@ class PerformJenkinsLinterAction : AnAction() {
     override fun update(e: AnActionEvent) {
         val virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE)
         e.presentation.isEnabledAndVisible = virtualFile != null
-    }
-
-
-    private fun readFileContent(event: AnActionEvent): String? {
-        val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)
-        return if (virtualFile != null) {
-            String(virtualFile.contentsToByteArray())
-        } else null
     }
 
     private fun reactivateToolWindow(linterToolWindow: ToolWindow) {
