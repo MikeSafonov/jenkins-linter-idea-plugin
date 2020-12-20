@@ -1,5 +1,6 @@
 package com.github.mikesafonov.jenkins.linter
 
+import com.github.mikesafonov.jenkins.linter.api.JenkinsServer
 import com.github.mikesafonov.jenkins.linter.settings.JenkinsLinterState
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -23,7 +24,7 @@ class PerformJenkinsLinterAction : AnAction() {
                 reactivateToolWindow(linterToolWindow)
             }
             val settings = JenkinsLinterState.getInstance()
-            val linter = JenkinsLinter(settings.jenkinsUrl, false)
+            val linter = JenkinsServer(settings.jenkinsUrl)
             val linterResponse = linter.lint(fileContent)
             Logger.getInstance(PerformJenkinsLinterAction::class.java).debug(linterResponse.message)
             JenkinsLinterToolWindowFactory.panel.add(linterResponse)

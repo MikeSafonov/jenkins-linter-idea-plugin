@@ -1,5 +1,6 @@
-package com.github.mikesafonov.jenkins.linter
+package com.github.mikesafonov.jenkins.linter.api
 
+import com.github.mikesafonov.jenkins.linter.JenkinsCrumb
 import com.google.gson.Gson
 import org.apache.http.HttpEntity
 import org.apache.http.client.HttpClient
