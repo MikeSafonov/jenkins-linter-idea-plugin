@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.github.mikesafonov.jenkins-linter-idea-plugin</id>
-    <name>Jenkins pipeline linter</name>
+    <name>Jenkins Pipeline Linter</name>
     <version>1.0.0</version>
     <vendor email="msafonovmail@gmail.com" url="https://github.com/MikeSafonov">Mike Safonov</vendor>
 
