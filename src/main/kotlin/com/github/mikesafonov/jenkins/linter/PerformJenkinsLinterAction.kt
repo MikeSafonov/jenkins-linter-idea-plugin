@@ -1,5 +1,6 @@
 package com.github.mikesafonov.jenkins.linter
 
+import com.github.mikesafonov.jenkins.linter.settings.JenkinsLinterState
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -19,15 +20,8 @@ class PerformJenkinsLinterAction : AnAction() {
             if (linterToolWindow.isAvailable) {
                 reactivateToolWindow(linterToolWindow)
             }
-            val settings = JenkinsLinterSettings.getInstance()
-            val credentials = JenkinsLinterCredentials.get()
-            val linter = if (credentials != null) {
-                JenkinsLinter(settings.jenkinsUrl, credentials.userName!!,
-                        credentials.getPasswordAsString()!!, settings.useCrumb)
-            } else {
-                JenkinsLinter(settings.jenkinsUrl, settings.useCrumb)
-            }
-
+            val settings = JenkinsLinterState.getInstance()
+            val linter = JenkinsLinter(settings.jenkinsUrl, false)
             val linterResponse = linter.lint(fileContent)
             Logger.getInstance(PerformJenkinsLinterAction::class.java).debug(linterResponse.message)
             JenkinsLinterToolWindowFactory.panel.add(linterResponse)

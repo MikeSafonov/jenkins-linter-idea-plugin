@@ -9,11 +9,11 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationConfigurable instance="com.github.mikesafonov.jenkins.linter.JenkinsLinterConfigurationPanel"
+        <applicationConfigurable instance="com.github.mikesafonov.jenkins.linter.settings.JenkinsLinterConfigurable"
                                  groupId="tools"
                                  groupWeight="130" displayName="Jenkins Linter"/>
         <applicationService
-                serviceImplementation="com.github.mikesafonov.jenkins.linter.JenkinsLinterSettings"/>
+                serviceImplementation="com.github.mikesafonov.jenkins.linter.settings.JenkinsLinterState"/>
 
         <toolWindow id="Jenkins Linter" anchor="bottom" factoryClass="com.github.mikesafonov.jenkins.linter.JenkinsLinterToolWindowFactory"
                     icon="/icons/jenkins13.svg"/>
