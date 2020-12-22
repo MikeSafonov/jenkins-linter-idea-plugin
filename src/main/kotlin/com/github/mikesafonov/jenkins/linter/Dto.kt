@@ -12,3 +12,5 @@ open class JenkinsResponse(val code: Int) {
     val success: Boolean
         get() = code == 200
 }
+
+data class ScriptError(val line: Int, val column: Int, val message: String)
