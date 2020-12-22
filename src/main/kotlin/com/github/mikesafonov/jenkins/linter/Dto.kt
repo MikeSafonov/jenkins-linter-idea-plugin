@@ -1,5 +1,7 @@
 package com.github.mikesafonov.jenkins.linter
 
+import com.intellij.openapi.vfs.VirtualFile
+
 /**
  * @author Mike Safonov
  */
@@ -14,3 +16,5 @@ open class JenkinsResponse(val code: Int) {
 }
 
 data class ScriptError(val line: Int, val column: Int, val message: String)
+
+data class ScriptErrorData(val file: VirtualFile, val error: ScriptError)
