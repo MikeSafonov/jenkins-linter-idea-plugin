@@ -8,7 +8,6 @@ import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JTextField
 
-
 /**
  * @author Mike Safonov
  */
@@ -29,7 +28,7 @@ class JenkinsLinterComponent {
         }
     }
 
-    fun getJenkinsUrl() : String {
+    fun getJenkinsUrl(): String {
         return jenkinsUrlTextField.text
     }
 

@@ -9,10 +9,10 @@ import com.intellij.openapi.progress.Task
 /**
  * @author Mike Safonov
  */
-class JenkinsCheckConnectionTask(private val jenkinsUrl : String) :
+class JenkinsCheckConnectionTask(private val jenkinsUrl: String) :
     Task.Modal(null, "Test Connection to Jenkins", false) {
 
-    var success : Boolean = false
+    var success: Boolean = false
 
     override fun run(indicator: ProgressIndicator) {
         indicator.text = "Connecting to $jenkinsUrl ... "

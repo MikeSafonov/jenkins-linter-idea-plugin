@@ -1,5 +1,6 @@
 package com.github.mikesafonov.jenkins.linter.api
 
+import com.github.mikesafonov.jenkins.linter.HttpCodes
 import com.github.mikesafonov.jenkins.linter.JenkinsCrumb
 import com.github.mikesafonov.jenkins.linter.JenkinsLinterException
 import com.google.gson.Gson
@@ -13,11 +14,14 @@ import java.nio.charset.StandardCharsets
 /**
  * @author Mike Safonov
  */
-class JenkinsCrumbIssuer(private val url: String, private val client: HttpClient,
-                         private val context: HttpClientContext?) {
+class JenkinsCrumbIssuer(
+    private val url: String,
+    private val client: HttpClient,
+    private val context: HttpClientContext?
+) {
 
     fun get(): JenkinsCrumb {
-        val crumbUrl = "${url}/crumbIssuer/api/json"
+        val crumbUrl = "$url/crumbIssuer/api/json"
 
         val httpGet = HttpGet(crumbUrl)
         val response = if (context != null) {
@@ -25,7 +29,7 @@ class JenkinsCrumbIssuer(private val url: String, private val client: HttpClient
         } else {
             client.execute(httpGet)
         }
-        if (response.statusLine.statusCode == 200) {
+        if (response.statusLine.statusCode == HttpCodes.SUCCESS) {
             return parseToCrumb(response.entity)
         } else {
             throw JenkinsLinterException(

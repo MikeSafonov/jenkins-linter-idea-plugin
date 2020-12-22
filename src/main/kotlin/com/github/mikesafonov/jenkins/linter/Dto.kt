@@ -12,7 +12,7 @@ data class JenkinsCrumb(val crumb: String, val crumbRequestField: String)
 
 open class JenkinsResponse(val code: Int) {
     val success: Boolean
-        get() = code == 200
+        get() = code == HttpCodes.SUCCESS
 }
 
 data class ScriptError(val line: Int, val column: Int, val message: String)

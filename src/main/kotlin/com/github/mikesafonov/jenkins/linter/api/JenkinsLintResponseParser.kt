@@ -7,7 +7,7 @@ import java.util.regex.Pattern
  * @author Mike Safonov
  */
 class JenkinsLintResponseParser {
-    private val ERROR_PATTERN: Pattern = Pattern.compile("@ line ([0-9]+), column ([0-9]+)")
+    private val errorPattern: Pattern = Pattern.compile("@ line ([0-9]+), column ([0-9]+)")
 
     fun parse(content: String): List<ScriptError> {
         return content.lines().mapNotNull {
@@ -16,7 +16,7 @@ class JenkinsLintResponseParser {
     }
 
     private fun toScriptError(line: String): ScriptError? {
-        val matcher = ERROR_PATTERN.matcher(line)
+        val matcher = errorPattern.matcher(line)
         if (!matcher.find()) {
             return null
         }

@@ -40,7 +40,7 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
         component.setJenkinsUrl(settings.jenkinsUrl)
     }
 
-    private fun getSettings() : JenkinsLinterState {
+    private fun getSettings(): JenkinsLinterState {
         return JenkinsLinterState.getInstance()
     }
 }
