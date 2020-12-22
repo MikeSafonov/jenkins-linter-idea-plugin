@@ -1,6 +1,7 @@
 package com.github.mikesafonov.jenkins.linter.api
 
 import com.github.mikesafonov.jenkins.linter.JenkinsCrumb
+import com.github.mikesafonov.jenkins.linter.JenkinsLinterException
 import com.google.gson.Gson
 import org.apache.http.HttpEntity
 import org.apache.http.client.HttpClient
@@ -27,8 +28,10 @@ class JenkinsCrumbIssuer(private val url: String, private val client: HttpClient
         if (response.statusLine.statusCode == 200) {
             return parseToCrumb(response.entity)
         } else {
-            throw RuntimeException("Unable to get crumb. Http code: " + response.statusLine.statusCode + " Reason: "
-                    + response.statusLine.reasonPhrase)
+            throw JenkinsLinterException(
+                "Unable to get crumb. Http code: ${response.statusLine.statusCode} " +
+                        "Reason: ${response.statusLine.reasonPhrase}"
+            )
         }
     }
 

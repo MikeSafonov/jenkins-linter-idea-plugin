@@ -1,5 +1,6 @@
 package com.github.mikesafonov.jenkins.linter.settings
 
+import com.github.mikesafonov.jenkins.linter.JenkinsLinterException
 import com.github.mikesafonov.jenkins.linter.api.JenkinsConnectionVerifyer
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProgressIndicator
@@ -20,7 +21,7 @@ class JenkinsCheckConnectionTask(private val jenkinsUrl : String) :
         try {
             JenkinsConnectionVerifyer().verify(jenkinsUrl)
             success = true
-        } catch (e: Exception) {
+        } catch (e: JenkinsLinterException) {
             Logger.getInstance(JenkinsCheckConnectionTask::class.java).debug(e)
         }
     }
