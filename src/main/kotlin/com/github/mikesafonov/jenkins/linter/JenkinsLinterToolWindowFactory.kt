@@ -28,7 +28,8 @@ class JenkinsLinterToolWindowFactory : ToolWindowFactory {
         val mover = ToSourceMover(project)
         val createContent = toolWindow.contentManager.factory.createContent(
             LinterResponsePanel(mover),
-            "Jenkins Linter", false
+            "Jenkins Linter",
+            false
         )
         toolWindow.contentManager.addContent(createContent)
         toolWindow.title = "Jenkins Linter"

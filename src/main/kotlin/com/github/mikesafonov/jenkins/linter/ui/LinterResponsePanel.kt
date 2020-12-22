@@ -30,15 +30,17 @@ class LinterResponsePanel(val mover: ToSourceMover) : JBPanelWithEmptyText() {
         val list = JBList<ScriptErrorData>()
         list.model = CollectionListModel(errors)
         list.cellRenderer = ScriptErrorCellRenderer()
-        list.addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent?) {
-                if (e == null || e.clickCount < 2) {
-                    return
+        list.addMouseListener(
+            object : MouseAdapter() {
+                override fun mouseClicked(e: MouseEvent?) {
+                    if (e == null || e.clickCount < 2) {
+                        return
+                    }
+                    val selected = list.selectedValue
+                    mover.move(selected)
                 }
-                val selected = list.selectedValue
-                mover.move(selected)
             }
-        })
+        )
         return list
     }
 }

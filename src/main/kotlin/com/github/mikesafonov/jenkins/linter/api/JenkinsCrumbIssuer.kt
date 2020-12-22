@@ -33,8 +33,8 @@ class JenkinsCrumbIssuer(
             return parseToCrumb(response.entity)
         } else {
             throw JenkinsLinterException(
-                "Unable to get crumb. Http code: ${response.statusLine.statusCode} " +
-                        "Reason: ${response.statusLine.reasonPhrase}"
+                "Unable to get crumb. Http code: " +
+                    "${response.statusLine.statusCode} Reason: ${response.statusLine.reasonPhrase}"
             )
         }
     }
