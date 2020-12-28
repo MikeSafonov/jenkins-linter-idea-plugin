@@ -35,7 +35,7 @@ class PerformJenkinsLinterAction : AnAction() {
 
     override fun update(e: AnActionEvent) {
         val virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE)
-        e.presentation.isEnabledAndVisible = virtualFile != null
+        e.presentation.isEnabledAndVisible = virtualFile != null && !virtualFile.isDirectory
     }
 
     private fun doLint(content: String): LinterResponse {
