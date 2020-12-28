@@ -1,19 +1,6 @@
 # jenkins-linter-idea-plugin Changelog
 
-## [Unreleased]
+## [0.1.0]
 ### Added
 
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-
-## [1.0.0]
-### Added
-
-### Changed
-
+- initial implementation of Jenkins Pipeline linting process.
