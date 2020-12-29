@@ -1,16 +1,15 @@
 # jenkins-linter-idea-plugin
 
 <!-- Plugin description -->
-**jenkins-linter-idea-plugin** is a Intellij Idea plugin to validate Jenkinsfiles by 
+**jenkins-linter-idea-plugin** is an Intellij Idea plugin to validate Jenkinsfiles by 
 the [Pipeline Linter](https://www.jenkins.io/doc/book/pipeline/development/#linter) of a Jenkins server.
-<!-- Plugin description end -->
+
 
 ## Features
 
 - [x] Supports declarative pipeline only
 - [x] HTTP linter integration
 - [x] Linting errors highlighting  
-- [ ] Crumb issues integration
 
 ## Installation
 
@@ -18,12 +17,16 @@ The plugin can be installed with **Settings | Plugins | Marketplace** and search
 
 ## Settings
 
-Settings for the plugin can be found under **Settings | Tools | Jenkins Linter**
+Settings for the plugin can be found under **Settings | Tools | Jenkins Linter**.
+
+
 
 ## Usage
 
 - Configure Jenkins server connection via plugin settings.
 - Open context menu on file and click **Validate by Jenkins Linter**
+
+<!-- Plugin description end -->
 
 ![Jenkins Linter menu](images/menu.png)
 
