@@ -23,6 +23,7 @@
                 class="com.github.mikesafonov.jenkins.linter.PerformJenkinsLinterAction"
                 text="Validate by Jenkins Linter"
                 description="Validate by jenkins linter" icon="/icons/jenkins13.svg">
+            <keyboard-shortcut first-keystroke="alt L" keymap="$default"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
