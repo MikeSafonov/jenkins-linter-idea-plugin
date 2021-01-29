@@ -15,7 +15,7 @@ import javax.swing.JTextField
 class JenkinsLinterComponent {
     private var panel: JPanel
     private var jenkinsUrlTextField: JTextField = JTextField()
-    private var trustSelfSignedCheckbox : JCheckBox = JCheckBox()
+    private var trustSelfSignedCheckbox: JCheckBox = JCheckBox()
     private var verifyButton = JButton("Check connection")
 
     init {

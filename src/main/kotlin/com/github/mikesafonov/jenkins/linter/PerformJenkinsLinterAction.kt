@@ -24,12 +24,20 @@ class PerformJenkinsLinterAction : AnAction() {
             if (linterToolWindow.isAvailable) {
                 reactivateToolWindow(linterToolWindow)
             }
-            val linterResponse = doLint(fileContent)
+            val settings = JenkinsLinterState.getInstance()
+            if (settings.jenkinsUrl.isBlank()) {
+                JenkinsLinterToolWindowFactory.getPanel(project).setErrorText(
+                    "Please configure Jenkins instance under Settings | Tools | Jenkins Linter"
+                )
+            } else {
+                val linterResponse = doLint(fileContent, settings)
 
-            val errors = JenkinsLintResponseParser().parse(linterResponse.message)
+                val errors = JenkinsLintResponseParser().parse(linterResponse.message)
 
-            val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)!!
-            JenkinsLinterToolWindowFactory.getPanel(project).setErrors(errors.map { ScriptErrorData(virtualFile, it) })
+                val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)!!
+                JenkinsLinterToolWindowFactory.getPanel(project)
+                    .setErrors(errors.map { ScriptErrorData(virtualFile, it) })
+            }
         }
     }
 
@@ -38,9 +46,8 @@ class PerformJenkinsLinterAction : AnAction() {
         e.presentation.isEnabledAndVisible = virtualFile != null && !virtualFile.isDirectory
     }
 
-    private fun doLint(content: String): LinterResponse {
-        val settings = JenkinsLinterState.getInstance()
-        val linter = JenkinsServer(settings.jenkinsUrl)
+    private fun doLint(content: String, settings: JenkinsLinterState): LinterResponse {
+        val linter = JenkinsServer(settings.jenkinsUrl, settings.trustSelfSigned)
         val linterResponse = linter.lint(content)
         Logger.getInstance(PerformJenkinsLinterAction::class.java).debug(linterResponse.message)
         return linterResponse

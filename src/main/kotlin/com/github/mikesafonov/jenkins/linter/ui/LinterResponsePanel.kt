@@ -20,6 +20,12 @@ class LinterResponsePanel(val mover: ToSourceMover) : JBPanelWithEmptyText() {
         this.layout = BorderLayout()
     }
 
+    fun setErrorText(errorText: String) {
+        removeAll()
+        withEmptyText(errorText)
+        invalidate()
+    }
+
     fun setErrors(errors: List<ScriptErrorData>) {
         removeAll()
         add(ScrollPaneFactory.createScrollPane(buildList(errors)), BorderLayout.CENTER)
