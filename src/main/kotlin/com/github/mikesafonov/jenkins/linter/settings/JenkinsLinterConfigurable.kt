@@ -18,7 +18,7 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
     override fun isModified(): Boolean {
         val settings = getSettings()
         return settings.jenkinsUrl != component.getJenkinsUrl() ||
-                settings.trustSelfSigned != component.getTrustSelfSigned()
+            settings.trustSelfSigned != component.getTrustSelfSigned()
     }
 
     override fun apply() {
