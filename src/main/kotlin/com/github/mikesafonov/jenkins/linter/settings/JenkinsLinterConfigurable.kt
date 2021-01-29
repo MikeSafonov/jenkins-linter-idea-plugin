@@ -17,12 +17,14 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
 
     override fun isModified(): Boolean {
         val settings = getSettings()
-        return settings.jenkinsUrl != component.getJenkinsUrl()
+        return settings.jenkinsUrl != component.getJenkinsUrl() ||
+                settings.trustSelfSigned != component.getTrustSelfSigned()
     }
 
     override fun apply() {
         val settings = getSettings()
         settings.jenkinsUrl = component.getJenkinsUrl()
+        settings.trustSelfSigned = component.getTrustSelfSigned()
     }
 
     @Nls(capitalization = Nls.Capitalization.Title)
@@ -38,6 +40,7 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
     override fun reset() {
         val settings = getSettings()
         component.setJenkinsUrl(settings.jenkinsUrl)
+        component.setTrustSelfSigned(settings.trustSelfSigned)
     }
 
     private fun getSettings(): JenkinsLinterState {

@@ -12,6 +12,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 @State(name = "JenkinsLinterState", storages = [Storage("JenkinsLinter.xml")])
 class JenkinsLinterState : PersistentStateComponent<JenkinsLinterState> {
     var jenkinsUrl = ""
+    var trustSelfSigned = false
 
     companion object {
         fun getInstance() = ServiceManager.getService(JenkinsLinterState::class.java)!!

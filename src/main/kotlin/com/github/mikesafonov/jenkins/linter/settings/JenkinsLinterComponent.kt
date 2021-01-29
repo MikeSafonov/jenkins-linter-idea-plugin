@@ -5,6 +5,7 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.ui.components.JBLabel
 import com.intellij.util.ui.FormBuilder
 import javax.swing.JButton
+import javax.swing.JCheckBox
 import javax.swing.JPanel
 import javax.swing.JTextField
 
@@ -14,11 +15,13 @@ import javax.swing.JTextField
 class JenkinsLinterComponent {
     private var panel: JPanel
     private var jenkinsUrlTextField: JTextField = JTextField()
+    private var trustSelfSignedCheckbox : JCheckBox = JCheckBox()
     private var verifyButton = JButton("Check connection")
 
     init {
         panel = FormBuilder.createFormBuilder()
             .addLabeledComponent(JBLabel("Jenkins url (protocol://hostname:port):"), jenkinsUrlTextField, 1, false)
+            .addLabeledComponent(JBLabel("Trust self-signed:"), trustSelfSignedCheckbox, 1, false)
             .addComponent(verifyButton, 1)
             .addComponentFillVertically(JPanel(), 0)
             .panel
@@ -36,6 +39,14 @@ class JenkinsLinterComponent {
         jenkinsUrlTextField.text = url
     }
 
+    fun getTrustSelfSigned(): Boolean {
+        return trustSelfSignedCheckbox.isSelected
+    }
+
+    fun setTrustSelfSigned(trustSelfSigned: Boolean) {
+        trustSelfSignedCheckbox.isSelected = trustSelfSigned
+    }
+
     fun getPanel(): JPanel {
         return panel
     }
@@ -46,7 +57,7 @@ class JenkinsLinterComponent {
             Messages.showErrorDialog("Please provide Jenkins URL", "Jenkins Linter Configuration")
             return
         }
-        val test = JenkinsCheckConnectionTask(jenkinsUrlTextField.text)
+        val test = JenkinsCheckConnectionTask(jenkinsUrlTextField.text, trustSelfSignedCheckbox.isSelected)
         ProgressManager.getInstance().run(test)
         if (test.success) {
             Messages.showInfoMessage(

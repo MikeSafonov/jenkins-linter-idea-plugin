@@ -7,8 +7,8 @@ import com.github.mikesafonov.jenkins.linter.JenkinsLinterException
  */
 class JenkinsConnectionVerifyer {
 
-    fun verify(host: String) {
-        val response = JenkinsServer(host).checkConnection()
+    fun verify(host: String, trustSelfSigned: Boolean = false) {
+        val response = JenkinsServer(host, trustSelfSigned).checkConnection()
         if (!response.success) {
             throw JenkinsLinterException("Request return status code ${response.code}")
         }

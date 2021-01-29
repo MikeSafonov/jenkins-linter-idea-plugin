@@ -5,8 +5,12 @@ import com.github.mikesafonov.jenkins.linter.LinterResponse
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.client.utils.URIBuilder
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy
 import org.apache.http.entity.mime.MultipartEntityBuilder
+import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClients
+import org.apache.http.ssl.SSLContextBuilder
 import org.apache.http.util.EntityUtils
 import java.io.Closeable
 import java.nio.charset.StandardCharsets
@@ -14,8 +18,16 @@ import java.nio.charset.StandardCharsets
 /**
  * @author Mike Safonov
  */
-class JenkinsServer(private val url: String) : Closeable {
-    private val httpClient = HttpClients.createDefault()
+class JenkinsServer(private val url: String, ignoreSelfSigned: Boolean = true) : Closeable {
+    private val httpClient: CloseableHttpClient = if (ignoreSelfSigned) {
+        val builder = SSLContextBuilder()
+        builder.loadTrustMaterial(TrustSelfSignedStrategy())
+        HttpClients.custom().setSSLSocketFactory(
+            SSLConnectionSocketFactory(builder.build())
+        ).build()
+    } else {
+        HttpClients.createDefault()
+    }
 
     fun checkConnection(): JenkinsResponse {
         return httpClient.execute(getRequest()).use {

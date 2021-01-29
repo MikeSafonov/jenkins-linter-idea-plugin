@@ -9,7 +9,7 @@ import com.intellij.openapi.progress.Task
 /**
  * @author Mike Safonov
  */
-class JenkinsCheckConnectionTask(private val jenkinsUrl: String) :
+class JenkinsCheckConnectionTask(private val jenkinsUrl: String, private val trustSelfSigned: Boolean) :
     Task.Modal(null, "Test Connection to Jenkins", false) {
 
     var success: Boolean = false
@@ -19,7 +19,7 @@ class JenkinsCheckConnectionTask(private val jenkinsUrl: String) :
         indicator.isIndeterminate = true
 
         try {
-            JenkinsConnectionVerifyer().verify(jenkinsUrl)
+            JenkinsConnectionVerifyer().verify(jenkinsUrl, trustSelfSigned)
             success = true
         } catch (e: JenkinsLinterException) {
             Logger.getInstance(JenkinsCheckConnectionTask::class.java).debug(e)
