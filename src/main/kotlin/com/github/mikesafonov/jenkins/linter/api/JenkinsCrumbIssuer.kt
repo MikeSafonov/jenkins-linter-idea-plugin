@@ -5,9 +5,9 @@ import com.github.mikesafonov.jenkins.linter.JenkinsCrumb
 import com.github.mikesafonov.jenkins.linter.JenkinsLinterException
 import com.google.gson.Gson
 import org.apache.http.HttpEntity
+import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
-import org.apache.http.client.protocol.HttpClientContext
 import org.apache.http.util.EntityUtils
 import java.nio.charset.StandardCharsets
 
@@ -16,19 +16,11 @@ import java.nio.charset.StandardCharsets
  */
 class JenkinsCrumbIssuer(
     private val url: String,
-    private val client: HttpClient,
-    private val context: HttpClientContext?
+    private val client: HttpClient
 ) {
 
     fun get(): JenkinsCrumb {
-        val crumbUrl = "$url/crumbIssuer/api/json"
-
-        val httpGet = HttpGet(crumbUrl)
-        val response = if (context != null) {
-            client.execute(httpGet, context)
-        } else {
-            client.execute(httpGet)
-        }
+        val response = execute("$url/crumbIssuer/api/json")
         if (response.statusLine.statusCode == HttpCodes.SUCCESS) {
             return parseToCrumb(response.entity)
         } else {
@@ -37,6 +29,11 @@ class JenkinsCrumbIssuer(
                     "${response.statusLine.statusCode} Reason: ${response.statusLine.reasonPhrase}"
             )
         }
+    }
+
+    private fun execute(url: String): HttpResponse {
+        val httpGet = HttpGet(url)
+        return client.execute(httpGet)
     }
 
     private fun parseToCrumb(entity: HttpEntity): JenkinsCrumb {
