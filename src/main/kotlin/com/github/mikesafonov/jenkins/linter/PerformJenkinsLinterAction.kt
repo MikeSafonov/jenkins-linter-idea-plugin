@@ -1,7 +1,7 @@
 package com.github.mikesafonov.jenkins.linter
 
 import com.github.mikesafonov.jenkins.linter.api.JenkinsLintResponseParser
-import com.github.mikesafonov.jenkins.linter.api.JenkinsServer
+import com.github.mikesafonov.jenkins.linter.api.JenkinsServerFactory
 import com.github.mikesafonov.jenkins.linter.settings.JenkinsLinterState
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -59,10 +59,12 @@ class PerformJenkinsLinterAction : AnAction() {
     }
 
     private fun doLint(content: String, settings: JenkinsLinterState): LinterResponse {
-        val linter = JenkinsServer(settings.jenkinsUrl, settings.trustSelfSigned)
-        val linterResponse = linter.lint(content)
-        Logger.getInstance(PerformJenkinsLinterAction::class.java).debug(linterResponse.message)
-        return linterResponse
+        val linter = JenkinsServerFactory.get(settings.jenkinsUrl, settings.trustSelfSigned)
+        linter.use {
+            val linterResponse = it.lint(content)
+            Logger.getInstance(PerformJenkinsLinterAction::class.java).debug(linterResponse.message)
+            return linterResponse
+        }
     }
 
     private fun reactivateToolWindow(linterToolWindow: ToolWindow) {
