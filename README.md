@@ -9,7 +9,8 @@ the [Pipeline Linter](https://www.jenkins.io/doc/book/pipeline/development/#lint
 
 - [x] Supports declarative pipeline only
 - [x] HTTP linter integration
-- [x] Linting errors highlighting  
+- [x] Linting errors highlighting
+- [x] Jenkins authorization  
 
 ## Installation
 

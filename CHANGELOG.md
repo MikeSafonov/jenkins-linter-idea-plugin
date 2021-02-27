@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.2.0]
+### Features
+
+- add Jenkins authorization
+
 ## [0.1.1]
 ### Improvement
 
