@@ -13,7 +13,7 @@ class JenkinsConnectionVerifyer {
         jenkinsServer.use {
             val response = jenkinsServer.checkConnection()
             if (!response.success) {
-                throw JenkinsLinterException("Request return status code ${response.code}")
+                throw JenkinsLinterException("Request return status code ${response.code}", response.code)
             }
         }
     }

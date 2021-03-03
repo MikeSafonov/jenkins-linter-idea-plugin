@@ -24,9 +24,9 @@ class JenkinsCrumbIssuer(
         if (response.statusLine.statusCode == HttpCodes.SUCCESS) {
             return parseToCrumb(response.entity)
         } else {
+            val code = response.statusLine.statusCode
             throw JenkinsLinterException(
-                "Unable to get crumb. Http code: " +
-                    "${response.statusLine.statusCode} Reason: ${response.statusLine.reasonPhrase}"
+                "Unable to get crumb. Reason: ${response.statusLine.reasonPhrase}", code
             )
         }
     }

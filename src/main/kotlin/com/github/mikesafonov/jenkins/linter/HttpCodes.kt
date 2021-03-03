@@ -6,5 +6,4 @@ package com.github.mikesafonov.jenkins.linter
 object HttpCodes {
     const val SUCCESS = 200
     const val FORBIDDEN = 403
-    const val SERVER_ERROR = 500
 }

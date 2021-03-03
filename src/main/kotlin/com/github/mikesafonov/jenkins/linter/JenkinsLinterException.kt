@@ -5,4 +5,4 @@ import java.lang.RuntimeException
 /**
  * @author Mike Safonov
  */
-class JenkinsLinterException(message: String) : RuntimeException(message)
+class JenkinsLinterException(message: String, val statusCode: Int) : RuntimeException(message)

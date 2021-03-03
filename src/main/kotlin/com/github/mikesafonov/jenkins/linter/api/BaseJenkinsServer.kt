@@ -1,6 +1,5 @@
 package com.github.mikesafonov.jenkins.linter.api
 
-import com.github.mikesafonov.jenkins.linter.HttpCodes
 import com.github.mikesafonov.jenkins.linter.JenkinsLinterException
 import com.github.mikesafonov.jenkins.linter.JenkinsResponse
 import com.github.mikesafonov.jenkins.linter.LinterResponse
@@ -43,7 +42,7 @@ abstract class BaseJenkinsServer(
             }
         } catch (ex: JenkinsLinterException) {
             Logger.getInstance(BaseJenkinsServer::class.java).debug(ex)
-            LinterResponse(HttpCodes.SERVER_ERROR, ex.message ?: ex.cause?.message ?: "")
+            LinterResponse(ex.statusCode, ex.message ?: ex.cause?.message ?: "")
         }
     }
 
