@@ -15,13 +15,46 @@ import javax.swing.JTextField
  * @author Mike Safonov
  */
 class JenkinsLinterComponent {
-    private var panel: JPanel
+    val panel: JPanel
     private var jenkinsUrlTextField: JTextField = JTextField()
     private var trustSelfSignedCheckbox: JCheckBox = JCheckBox()
     private var verifyButton = JButton("Check connection")
     private var usernameTextField: JTextField = JTextField()
     private var passwordTextField: JPasswordField = JPasswordField()
     private var useCrumbIssuerCheckbox: JCheckBox = JCheckBox()
+
+    var jenkinsUrl: String
+        get() = jenkinsUrlTextField.text
+        set(value) {
+            jenkinsUrlTextField.text = value
+        }
+    var trustSelfSigned: Boolean
+        get() = trustSelfSignedCheckbox.isSelected
+        set(value) {
+            trustSelfSignedCheckbox.isSelected = value
+        }
+    var useCrumbIssuer: Boolean
+        get() = useCrumbIssuerCheckbox.isSelected
+        set(value) {
+            useCrumbIssuerCheckbox.isSelected = value
+        }
+    var credentials: Credentials?
+        get() {
+            if (username != null && password != null) {
+                return Credentials(username, password)
+            }
+            return null
+        }
+        set(value) {
+            if (value != null) {
+                passwordTextField.text = value.getPasswordAsString()
+                usernameTextField.text = value.userName ?: ""
+            }
+        }
+    val username: String?
+        get() = usernameTextField.text
+    val password: CharArray?
+        get() = passwordTextField.password
 
     init {
         panel = FormBuilder.createFormBuilder()
@@ -39,58 +72,6 @@ class JenkinsLinterComponent {
         }
     }
 
-    fun getJenkinsUrl(): String {
-        return jenkinsUrlTextField.text
-    }
-
-    fun setJenkinsUrl(url: String) {
-        jenkinsUrlTextField.text = url
-    }
-
-    fun getTrustSelfSigned(): Boolean {
-        return trustSelfSignedCheckbox.isSelected
-    }
-
-    fun setTrustSelfSigned(trustSelfSigned: Boolean) {
-        trustSelfSignedCheckbox.isSelected = trustSelfSigned
-    }
-
-    fun getUseCrumbIssuer(): Boolean {
-        return useCrumbIssuerCheckbox.isSelected
-    }
-
-    fun setUseCrumbIssuer(useCrumbIssuer: Boolean) {
-        useCrumbIssuerCheckbox.isSelected = useCrumbIssuer
-    }
-
-    fun setCredentials(credentials: Credentials?) {
-        if (credentials != null) {
-            passwordTextField.text = credentials.getPasswordAsString()
-            usernameTextField.text = credentials.userName ?: ""
-        }
-    }
-
-    fun getUsername(): String? {
-        return usernameTextField.text
-    }
-
-    fun getPassword(): CharArray? {
-        return passwordTextField.password
-    }
-
-    fun getCredentials(): Credentials? {
-        val username = getUsername()
-        val password = getPassword()
-        if (username != null && password != null) {
-            return Credentials(username, password)
-        }
-        return null
-    }
-
-    fun getPanel(): JPanel {
-        return panel
-    }
-
     private fun checkConnection() {
         val url = jenkinsUrlTextField.text
         if (url.isNullOrBlank()) {
@@ -99,7 +80,7 @@ class JenkinsLinterComponent {
         }
         val test = JenkinsCheckConnectionTask(
             jenkinsUrlTextField.text,
-            trustSelfSignedCheckbox.isSelected, getCredentials()
+            trustSelfSignedCheckbox.isSelected, credentials
         )
         ProgressManager.getInstance().run(test)
         if (test.success) {

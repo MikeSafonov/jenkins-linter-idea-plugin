@@ -14,14 +14,14 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
 
     override fun createComponent(): JComponent {
         reset()
-        return component.getPanel()
+        return component.panel
     }
 
     override fun isModified(): Boolean {
         val settings = getSettings()
-        val modified = settings.jenkinsUrl != component.getJenkinsUrl() ||
-            settings.trustSelfSigned != component.getTrustSelfSigned() ||
-            settings.useCrumbIssuer != component.getUseCrumbIssuer()
+        val modified = settings.jenkinsUrl != component.jenkinsUrl ||
+            settings.trustSelfSigned != component.trustSelfSigned ||
+            settings.useCrumbIssuer != component.useCrumbIssuer
 
         if (modified) {
             return true
@@ -30,18 +30,18 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
         return if (credentials == null) {
             true
         } else {
-            !Objects.equals(credentials.userName, component.getUsername()) ||
-                !Comparing.equal(credentials.getPasswordAsString(), component.getPassword())
+            !Objects.equals(credentials.userName, component.username) ||
+                !Comparing.equal(credentials.getPasswordAsString(), component.password)
         }
     }
 
     override fun apply() {
         val settings = getSettings()
-        settings.jenkinsUrl = component.getJenkinsUrl()
-        settings.trustSelfSigned = component.getTrustSelfSigned()
-        settings.useCrumbIssuer = component.getUseCrumbIssuer()
+        settings.jenkinsUrl = component.jenkinsUrl
+        settings.trustSelfSigned = component.trustSelfSigned
+        settings.useCrumbIssuer = component.useCrumbIssuer
 
-        val credentials = component.getCredentials()
+        val credentials = component.credentials
         if (credentials != null) {
             JenkinsLinterCredentials.store(credentials)
         }
@@ -59,10 +59,10 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
 
     override fun reset() {
         val settings = getSettings()
-        component.setJenkinsUrl(settings.jenkinsUrl)
-        component.setTrustSelfSigned(settings.trustSelfSigned)
-        component.setUseCrumbIssuer(settings.useCrumbIssuer)
-        component.setCredentials(JenkinsLinterCredentials.get())
+        component.jenkinsUrl = settings.jenkinsUrl
+        component.trustSelfSigned = settings.trustSelfSigned
+        component.useCrumbIssuer = settings.useCrumbIssuer
+        component.credentials = JenkinsLinterCredentials.get()
     }
 
     private fun getSettings(): JenkinsLinterState {
