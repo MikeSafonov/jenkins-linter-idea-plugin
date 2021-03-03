@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.3.0]
+### Features
+
+- add `Use crumb issuer` setting to prevent accessing crumb
+
 ## [0.2.0]
 ### Features
 
