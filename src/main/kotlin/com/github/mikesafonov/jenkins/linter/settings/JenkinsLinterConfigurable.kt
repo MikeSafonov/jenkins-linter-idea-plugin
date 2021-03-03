@@ -3,6 +3,7 @@ package com.github.mikesafonov.jenkins.linter.settings
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.util.Comparing
 import org.jetbrains.annotations.Nls
+import java.util.Objects
 import javax.swing.JComponent
 
 /**
@@ -29,7 +30,7 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
         return if (credentials == null) {
             true
         } else {
-            !Comparing.equal(credentials.userName, component.getUsername()) ||
+            !Objects.equals(credentials.userName, component.getUsername()) ||
                 !Comparing.equal(credentials.getPasswordAsString(), component.getPassword())
         }
     }
