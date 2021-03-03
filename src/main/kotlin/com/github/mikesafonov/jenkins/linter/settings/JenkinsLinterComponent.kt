@@ -27,7 +27,7 @@ class JenkinsLinterComponent {
             .addLabeledComponent(JBLabel("Jenkins url (protocol://hostname:port):"), jenkinsUrlTextField, 1, false)
             .addLabeledComponent(JBLabel("Trust self-signed:"), trustSelfSignedCheckbox, 1, false)
             .addLabeledComponent(JBLabel("Username:"), usernameTextField, 1, false)
-            .addLabeledComponent(JBLabel("Password:"), passwordTextField, 1, false)
+            .addLabeledComponent(JBLabel("Password/Token:"), passwordTextField, 1, false)
             .addComponent(verifyButton, 1)
             .addComponentFillVertically(JPanel(), 0)
             .panel
