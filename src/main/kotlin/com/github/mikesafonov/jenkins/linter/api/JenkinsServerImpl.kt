@@ -8,6 +8,7 @@ import com.intellij.openapi.diagnostic.Logger
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.client.utils.URIBuilder
+import org.apache.http.entity.mime.MultipartEntityBuilder
 import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.util.EntityUtils
 import java.nio.charset.StandardCharsets
@@ -15,12 +16,17 @@ import java.nio.charset.StandardCharsets
 /**
  * @author Mike Safonov
  */
-abstract class BaseJenkinsServer(
+class JenkinsServerImpl(
     private val url: String,
     trustSelfSigned: Boolean = true,
-    credentials: Credentials? = null
+    credentials: Credentials? = null,
+    private val useCrumbIssuer: Boolean = false
 ) : JenkinsServer {
-    protected val httpClient: CloseableHttpClient = HttpClientFactory.get(trustSelfSigned, credentials)
+    private val httpClient: CloseableHttpClient = HttpClientFactory.get(trustSelfSigned, credentials)
+    private val crumbIssuer = JenkinsCrumbIssuer(
+        url,
+        httpClient
+    )
 
     override fun checkConnection(): JenkinsResponse {
         return httpClient.execute(getRequest()).use {
@@ -41,14 +47,26 @@ abstract class BaseJenkinsServer(
                 LinterResponse(it.statusLine.statusCode, response)
             }
         } catch (ex: JenkinsLinterException) {
-            Logger.getInstance(BaseJenkinsServer::class.java).debug(ex)
+            Logger.getInstance(JenkinsServerImpl::class.java).debug(ex)
             LinterResponse(ex.statusCode, ex.message ?: ex.cause?.message ?: "")
         }
     }
 
-    protected abstract fun buildPost(fileContent: String): HttpPost
+    private fun buildPost(fileContent: String): HttpPost {
+        val postMethod = postRequest("/pipeline-model-converter/validate")
 
-    protected fun postRequest(path: String): HttpPost {
+        if (useCrumbIssuer) {
+            val crumb = crumbIssuer.get()
+            postMethod.addHeader(crumb.crumbRequestField, crumb.crumb)
+        }
+
+        postMethod.entity = MultipartEntityBuilder.create()
+            .addTextBody("jenkinsfile", fileContent)
+            .build()
+        return postMethod
+    }
+
+    private fun postRequest(path: String): HttpPost {
         val req = URIBuilder(url).setPath(path).build().normalize()
         return HttpPost(req)
     }
