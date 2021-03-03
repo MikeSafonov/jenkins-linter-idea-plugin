@@ -3,6 +3,7 @@ package com.github.mikesafonov.jenkins.linter
 import com.github.mikesafonov.jenkins.linter.api.JenkinsLintResponseParser
 import com.github.mikesafonov.jenkins.linter.api.JenkinsServerFactory
 import com.github.mikesafonov.jenkins.linter.settings.JenkinsLinterState
+import com.github.mikesafonov.jenkins.linter.ui.LinterResponsePanel
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -39,10 +40,7 @@ class PerformJenkinsLinterAction : AnAction() {
                         )
                     }
                     HttpCodes.SUCCESS -> {
-                        val errors = JenkinsLintResponseParser().parse(linterResponse.message)
-
-                        val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)!!
-                        panel.setErrors(errors.map { ScriptErrorData(virtualFile, it) })
+                        handleSuccess(linterResponse, panel, event)
                     }
                     else -> {
                         val mess = linterResponse.message
@@ -50,6 +48,20 @@ class PerformJenkinsLinterAction : AnAction() {
                     }
                 }
             }
+        }
+    }
+
+    private fun handleSuccess(
+        linterResponse: LinterResponse,
+        panel: LinterResponsePanel,
+        event: AnActionEvent
+    ) {
+        if (linterResponse.successValidated) {
+            panel.setText(linterResponse.message)
+        } else {
+            val errors = JenkinsLintResponseParser().parse(linterResponse.message)
+            val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)!!
+            panel.setErrors(errors.map { ScriptErrorData(virtualFile, it) })
         }
     }
 

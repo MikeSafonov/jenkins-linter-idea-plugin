@@ -6,7 +6,10 @@ import com.intellij.openapi.vfs.VirtualFile
  * @author Mike Safonov
  */
 
-class LinterResponse(code: Int, val message: String) : JenkinsResponse(code)
+class LinterResponse(code: Int, val message: String) : JenkinsResponse(code) {
+    val successValidated: Boolean
+        get() = message == "Jenkinsfile successfully validated.\n"
+}
 
 data class JenkinsCrumb(val crumb: String, val crumbRequestField: String)
 
