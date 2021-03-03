@@ -20,7 +20,7 @@ class LinterResponsePanel(val mover: ToSourceMover) : JBPanelWithEmptyText() {
         this.layout = BorderLayout()
     }
 
-    fun setErrorText(errorText: String) {
+    fun setText(errorText: String) {
         removeAll()
         withEmptyText(errorText)
         invalidate()

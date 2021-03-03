@@ -27,14 +27,14 @@ class PerformJenkinsLinterAction : AnAction() {
             val settings = JenkinsLinterState.getInstance()
             val panel = JenkinsLinterToolWindowFactory.getPanel(project)
             if (settings.jenkinsUrl.isBlank()) {
-                panel.setErrorText(
+                panel.setText(
                     "Please configure Jenkins instance under Settings | Tools | Jenkins Linter"
                 )
             } else {
                 val linterResponse = doLint(fileContent, settings)
                 when (linterResponse.code) {
                     HttpCodes.FORBIDDEN -> {
-                        panel.setErrorText(
+                        panel.setText(
                             "Forbidden. Please configure Jenkins instance under Settings | Tools | Jenkins Linter"
                         )
                     }
@@ -46,7 +46,7 @@ class PerformJenkinsLinterAction : AnAction() {
                     }
                     else -> {
                         val mess = linterResponse.message
-                        panel.setErrorText("HTTP response status code: ${linterResponse.code}, message: $mess")
+                        panel.setText("HTTP response status code: ${linterResponse.code}, message: $mess")
                     }
                 }
             }
