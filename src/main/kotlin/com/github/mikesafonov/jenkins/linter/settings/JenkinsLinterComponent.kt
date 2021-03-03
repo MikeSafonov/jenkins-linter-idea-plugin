@@ -21,6 +21,7 @@ class JenkinsLinterComponent {
     private var verifyButton = JButton("Check connection")
     private var usernameTextField: JTextField = JTextField()
     private var passwordTextField: JPasswordField = JPasswordField()
+    private var useCrumbIssuerCheckbox: JCheckBox = JCheckBox()
 
     init {
         panel = FormBuilder.createFormBuilder()
@@ -28,6 +29,7 @@ class JenkinsLinterComponent {
             .addLabeledComponent(JBLabel("Trust self-signed:"), trustSelfSignedCheckbox, 1, false)
             .addLabeledComponent(JBLabel("Username:"), usernameTextField, 1, false)
             .addLabeledComponent(JBLabel("Password/Token:"), passwordTextField, 1, false)
+            .addLabeledComponent(JBLabel("Use crumb issuer:"), useCrumbIssuerCheckbox, 1, false)
             .addComponent(verifyButton, 1)
             .addComponentFillVertically(JPanel(), 0)
             .panel
@@ -51,6 +53,14 @@ class JenkinsLinterComponent {
 
     fun setTrustSelfSigned(trustSelfSigned: Boolean) {
         trustSelfSignedCheckbox.isSelected = trustSelfSigned
+    }
+
+    fun getUseCrumbIssuer(): Boolean {
+        return useCrumbIssuerCheckbox.isSelected
+    }
+
+    fun setUseCrumbIssuer(useCrumbIssuer: Boolean) {
+        useCrumbIssuerCheckbox.isSelected = useCrumbIssuer
     }
 
     fun setCredentials(credentials: Credentials?) {
