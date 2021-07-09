@@ -22,7 +22,7 @@ class JenkinsServerImpl(
     credentials: Credentials? = null,
     private val useCrumbIssuer: Boolean = false
 ) : JenkinsServer {
-    private val httpClient: CloseableHttpClient = HttpClientFactory.get(trustSelfSigned, credentials)
+    private val httpClient: CloseableHttpClient = HttpClientFactory.get(url, trustSelfSigned, credentials)
     private val crumbIssuer = JenkinsCrumbIssuer(
         url,
         httpClient
