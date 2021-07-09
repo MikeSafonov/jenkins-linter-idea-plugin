@@ -1,0 +1,21 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: io.gitlab.arturbosch.detekt
+    versions:
+    - 1.16.0
+  - dependency-name: org.jetbrains.intellij
+    versions:
+    - 0.7.0
+    - 0.7.1
+  - dependency-name: org.jlleitschuh.gradle.ktlint
+    versions:
+    - 10.0.0
+  - dependency-name: org.jetbrains.changelog
+    versions:
+    - 1.1.1
