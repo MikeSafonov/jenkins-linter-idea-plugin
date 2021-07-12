@@ -7,7 +7,6 @@ import com.intellij.credentialStore.Credentials
 import com.intellij.openapi.diagnostic.Logger
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpPost
-import org.apache.http.client.utils.URIBuilder
 import org.apache.http.entity.mime.MultipartEntityBuilder
 import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.util.EntityUtils
@@ -29,7 +28,7 @@ class JenkinsServerImpl(
     )
 
     override fun checkConnection(): JenkinsResponse {
-        return httpClient.execute(getRequest()).use {
+        return httpClient.execute(HttpGet(url)).use {
             val code = it.statusLine.statusCode
             JenkinsResponse(code)
         }
@@ -53,7 +52,7 @@ class JenkinsServerImpl(
     }
 
     private fun buildPost(fileContent: String): HttpPost {
-        val postMethod = postRequest("/pipeline-model-converter/validate")
+        val postMethod = HttpPost("$url/pipeline-model-converter/validate")
 
         if (useCrumbIssuer) {
             val crumb = crumbIssuer.get()
@@ -64,14 +63,5 @@ class JenkinsServerImpl(
             .addTextBody("jenkinsfile", fileContent)
             .build()
         return postMethod
-    }
-
-    private fun postRequest(path: String): HttpPost {
-        val req = URIBuilder(url).setPath(path).build().normalize()
-        return HttpPost(req)
-    }
-
-    private fun getRequest(): HttpGet {
-        return HttpGet(url)
     }
 }

@@ -37,7 +37,11 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
 
     override fun apply() {
         val settings = getSettings()
-        settings.jenkinsUrl = component.jenkinsUrl
+        val jenkinsUrl = component.jenkinsUrl
+        settings.jenkinsUrl = if(jenkinsUrl.endsWith("/")) {
+            jenkinsUrl.substring(0, jenkinsUrl.length - 1)
+        } else jenkinsUrl
+
         settings.trustSelfSigned = component.trustSelfSigned
         settings.useCrumbIssuer = component.useCrumbIssuer
 
