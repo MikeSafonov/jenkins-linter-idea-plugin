@@ -42,7 +42,9 @@ class PerformJenkinsLinterAction : AnAction() {
                             when (linterResponse.code) {
                                 HttpCodes.FORBIDDEN -> {
                                     panel.setText(
-                                        "Forbidden. Please configure Jenkins instance under Settings | Tools | Jenkins Linter"
+                                        """
+                                    Forbidden. Please configure Jenkins instance under Settings | Tools | Jenkins Linter
+                                        """.trimIndent()
                                     )
                                 }
                                 HttpCodes.SUCCESS -> {
