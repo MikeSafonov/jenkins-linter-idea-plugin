@@ -6,6 +6,7 @@ import com.intellij.ui.CollectionListModel
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.components.JBList
 import com.intellij.ui.components.JBPanelWithEmptyText
+import com.intellij.ui.components.JBTextArea
 import java.awt.BorderLayout
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
@@ -23,6 +24,12 @@ class LinterResponsePanel(val mover: ToSourceMover) : JBPanelWithEmptyText() {
     fun setText(errorText: String) {
         removeAll()
         withEmptyText(errorText)
+        invalidate()
+    }
+
+    fun multilineText(errorText: String) {
+        removeAll()
+        add(ScrollPaneFactory.createScrollPane(JBTextArea(errorText)), BorderLayout.CENTER)
         invalidate()
     }
 

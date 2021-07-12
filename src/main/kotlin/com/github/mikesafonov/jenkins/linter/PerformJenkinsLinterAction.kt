@@ -8,6 +8,9 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.progress.ProgressIndicator
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.openapi.progress.Task.Backgroundable
 import com.intellij.openapi.wm.ToolWindow
 
 /**
@@ -60,8 +63,12 @@ class PerformJenkinsLinterAction : AnAction() {
             panel.setText(linterResponse.message)
         } else {
             val errors = JenkinsLintResponseParser().parse(linterResponse.message)
-            val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)!!
-            panel.setErrors(errors.map { ScriptErrorData(virtualFile, it) })
+            if (errors.isEmpty()) {
+                panel.multilineText(linterResponse.message)
+            } else {
+                val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)!!
+                panel.setErrors(errors.map { ScriptErrorData(virtualFile, it) })
+            }
         }
     }
 
