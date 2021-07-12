@@ -2,6 +2,25 @@
 
 ## [Unreleased]
 
+## [0.5.0]
+### Features
+
+- builtin SSL and proxy support
+
+### Improvement
+
+- linting process wrapped inside `Task.Backgroundable`
+- UI for linting errors
+
+### Fixes
+
+- build `pipeline-model-converter/validate` URL relative to settings `Jenkins url`
+
+## [0.4.0]
+### Improvement
+
+- changed `pluginSinceBuild` to 201 and `pluginUntilBuild` to 211.*
+
 ## [0.3.0]
 ### Features
 
