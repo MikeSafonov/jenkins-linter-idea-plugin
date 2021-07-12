@@ -21,7 +21,6 @@ The plugin can be installed with **Settings | Plugins | Marketplace** and search
 Settings for the plugin can be found under **Settings | Tools | Jenkins Linter**.
 
 
-
 ## Usage
 
 - Configure Jenkins server connection via plugin settings.
@@ -30,6 +29,9 @@ Settings for the plugin can be found under **Settings | Tools | Jenkins Linter**
 <!-- Plugin description end -->
 
 ![Jenkins Linter menu](images/menu.png)
+
+## Proxy and SSL support
+Starting from `0.5.0` plugin support builtin proxy (**File | Settings | Appearance & Behavior | System Settings | HTTP Proxy**) and SSL(**File | Settings | Tools | Server Certificates**) settings. 
 
 ## Contributing
 
