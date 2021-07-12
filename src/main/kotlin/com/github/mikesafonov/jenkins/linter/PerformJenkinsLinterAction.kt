@@ -35,21 +35,26 @@ class PerformJenkinsLinterAction : AnAction() {
                     "Please configure Jenkins instance under Settings | Tools | Jenkins Linter"
                 )
             } else {
-                val linterResponse = doLint(fileContent, settings)
-                when (linterResponse.code) {
-                    HttpCodes.FORBIDDEN -> {
-                        panel.setText(
-                            "Forbidden. Please configure Jenkins instance under Settings | Tools | Jenkins Linter"
-                        )
-                    }
-                    HttpCodes.SUCCESS -> {
-                        handleSuccess(linterResponse, panel, event)
-                    }
-                    else -> {
-                        val mess = linterResponse.message
-                        panel.setText("HTTP response status code: ${linterResponse.code}, message: $mess")
-                    }
-                }
+                ProgressManager.getInstance()
+                    .run(object : Backgroundable(project, "Linting ${fileContent.name} ...", false) {
+                        override fun run(indicator: ProgressIndicator) {
+                            val linterResponse = doLint(fileContent.content, settings)
+                            when (linterResponse.code) {
+                                HttpCodes.FORBIDDEN -> {
+                                    panel.setText(
+                                        "Forbidden. Please configure Jenkins instance under Settings | Tools | Jenkins Linter"
+                                    )
+                                }
+                                HttpCodes.SUCCESS -> {
+                                    handleSuccess(linterResponse, panel, event)
+                                }
+                                else -> {
+                                    val mess = linterResponse.message
+                                    panel.setText("HTTP response status code: ${linterResponse.code}, message: $mess")
+                                }
+                            }
+                        }
+                    })
             }
         }
     }

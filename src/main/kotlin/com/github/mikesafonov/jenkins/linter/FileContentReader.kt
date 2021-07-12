@@ -8,10 +8,10 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
  */
 class FileContentReader {
 
-    fun read(event: AnActionEvent): String? {
+    fun read(event: AnActionEvent): FileContent? {
         val virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE)
         return if (virtualFile != null) {
-            String(virtualFile.contentsToByteArray())
+            FileContent(virtualFile.name, String(virtualFile.contentsToByteArray()))
         } else null
     }
 }
