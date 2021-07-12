@@ -9,7 +9,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.5.20"
     id("org.jetbrains.intellij") version "0.7.2"
-    id("org.jetbrains.changelog") version "1.1.2"
+    id("org.jetbrains.changelog") version "1.2.0"
     id("io.gitlab.arturbosch.detekt") version "1.17.1"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
 }
@@ -36,8 +36,8 @@ intellij {
 }
 
 changelog {
-    version = properties("pluginVersion")
-    groups = emptyList()
+    version.set(properties("pluginVersion"))
+    groups.set(emptyList())
 }
 
 detekt {
