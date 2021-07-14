@@ -7,6 +7,7 @@ import com.github.mikesafonov.jenkins.linter.ui.LinterResponsePanel
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
@@ -39,20 +40,23 @@ class PerformJenkinsLinterAction : AnAction() {
                     .run(object : Backgroundable(project, "Linting ${fileContent.name} ...", false) {
                         override fun run(indicator: ProgressIndicator) {
                             val linterResponse = doLint(fileContent.content, settings)
-                            when (linterResponse.code) {
-                                HttpCodes.FORBIDDEN -> {
-                                    panel.setText(
-                                        """
+                            ApplicationManager.getApplication().invokeLaterOnWriteThread {
+                                when (linterResponse.code) {
+                                    HttpCodes.FORBIDDEN -> {
+                                        panel.setText(
+                                            """
                                     Forbidden. Please configure Jenkins instance under Settings | Tools | Jenkins Linter
                                         """.trimIndent()
-                                    )
-                                }
-                                HttpCodes.SUCCESS -> {
-                                    handleSuccess(linterResponse, panel, event)
-                                }
-                                else -> {
-                                    val mess = linterResponse.message
-                                    panel.setText("HTTP response status code: ${linterResponse.code}, message: $mess")
+                                        )
+                                    }
+                                    HttpCodes.SUCCESS -> {
+                                        handleSuccess(linterResponse, panel, event)
+                                    }
+                                    else -> {
+                                        val mess = linterResponse.message
+                                        val code = linterResponse.code
+                                        panel.setText("HTTP response status code: $code, message: $mess")
+                                    }
                                 }
                             }
                         }
