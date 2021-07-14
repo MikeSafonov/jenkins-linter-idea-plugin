@@ -24,19 +24,19 @@ class LinterResponsePanel(val mover: ToSourceMover) : JBPanelWithEmptyText() {
     fun setText(errorText: String) {
         removeAll()
         withEmptyText(errorText)
-        invalidate()
+        updateUI()
     }
 
     fun multilineText(errorText: String) {
         removeAll()
         add(ScrollPaneFactory.createScrollPane(JBTextArea(errorText)), BorderLayout.CENTER)
-        invalidate()
+        updateUI()
     }
 
     fun setErrors(errors: List<ScriptErrorData>) {
         removeAll()
         add(ScrollPaneFactory.createScrollPane(buildList(errors)), BorderLayout.CENTER)
-        invalidate()
+        updateUI()
     }
 
     private fun buildList(errors: List<ScriptErrorData>): JBList<ScriptErrorData> {
