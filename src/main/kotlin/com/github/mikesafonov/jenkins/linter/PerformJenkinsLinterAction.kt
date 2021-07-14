@@ -46,7 +46,7 @@ class PerformJenkinsLinterAction : AnAction() {
                                         panel.setText(
                                             """
                                     Forbidden. Please configure Jenkins instance under Settings | Tools | Jenkins Linter
-                                        """.trimIndent()
+                                            """.trimIndent()
                                         )
                                     }
                                     HttpCodes.SUCCESS -> {
