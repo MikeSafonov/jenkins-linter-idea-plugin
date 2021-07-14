@@ -1,7 +1,11 @@
 # jenkins-linter-idea-plugin Changelog
 
 ## [Unreleased]
-## [0.5.0]
+## [0.5.1]
+
+### Fixes
+
+- fixed ui update from `Task.Backgroundable`
 
 ## [0.5.0]
 ### Features
