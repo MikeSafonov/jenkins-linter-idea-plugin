@@ -1,7 +1,12 @@
 # jenkins-linter-idea-plugin Changelog
 
 ## [Unreleased]
-## [0.5.1]
+## [0.5.2]
+
+### Fixes
+
+- Support for 2020.2
+
 ## [0.5.1]
 
 ### Fixes
