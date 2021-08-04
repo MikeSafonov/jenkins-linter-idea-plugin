@@ -5,7 +5,7 @@
 
 ### Fixes
 
-- Support for 2021.2
+- Support for 2021.2 by [@sercheo87](https://github.com/sercheo87)
 
 ## [0.5.1]
 
