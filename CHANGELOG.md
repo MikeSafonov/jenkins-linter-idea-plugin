@@ -5,7 +5,7 @@
 
 ### Fixes
 
-- Support for 2020.2
+- Support for 2021.2
 
 ## [0.5.1]
 
