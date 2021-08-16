@@ -52,7 +52,7 @@ detekt {
 
 tasks {
     withType<Wrapper> {
-        gradleVersion = "6.7.1"
+        gradleVersion = "7.1.1"
         distributionType = Wrapper.DistributionType.BIN
     }
 
