@@ -8,8 +8,13 @@ import com.intellij.credentialStore.Credentials
  */
 class JenkinsConnectionVerifyer {
 
-    fun verify(host: String, trustSelfSigned: Boolean = false, credentials: Credentials?) {
-        val jenkinsServer = JenkinsServerFactory.get(host, trustSelfSigned, credentials)
+    fun verify(
+        host: String,
+        trustSelfSigned: Boolean = false,
+        ignoreCertificate: Boolean = false,
+        credentials: Credentials?
+    ) {
+        val jenkinsServer = JenkinsServerFactory.get(host, trustSelfSigned, ignoreCertificate, credentials)
         jenkinsServer.use {
             val response = jenkinsServer.checkConnection()
             if (!response.success) {

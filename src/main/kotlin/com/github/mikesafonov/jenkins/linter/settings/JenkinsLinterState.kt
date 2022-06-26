@@ -13,6 +13,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 class JenkinsLinterState : PersistentStateComponent<JenkinsLinterState> {
     var jenkinsUrl = ""
     var trustSelfSigned = false
+    var ignoreCertificate = false
     var useCrumbIssuer = false
 
     companion object {

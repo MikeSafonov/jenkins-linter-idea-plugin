@@ -18,10 +18,14 @@ import java.nio.charset.StandardCharsets
 class JenkinsServerImpl(
     private val url: String,
     trustSelfSigned: Boolean = true,
+    ignoreCertificate: Boolean = false,
     credentials: Credentials? = null,
     private val useCrumbIssuer: Boolean = false
 ) : JenkinsServer {
-    private val httpClient: CloseableHttpClient = HttpClientFactory.get(url, trustSelfSigned, credentials)
+    private val httpClient: CloseableHttpClient = HttpClientFactory.get(
+        url, trustSelfSigned,
+        ignoreCertificate, credentials
+    )
     private val crumbIssuer = JenkinsCrumbIssuer(
         url,
         httpClient

@@ -89,7 +89,10 @@ class PerformJenkinsLinterAction : AnAction() {
     }
 
     private fun doLint(content: String, settings: JenkinsLinterState): LinterResponse {
-        val linter = JenkinsServerFactory.get(settings.jenkinsUrl, settings.trustSelfSigned, settings.useCrumbIssuer)
+        val linter = JenkinsServerFactory.get(
+            settings.jenkinsUrl, settings.trustSelfSigned, settings.ignoreCertificate,
+            settings.useCrumbIssuer
+        )
         linter.use {
             val linterResponse = it.lint(content)
             Logger.getInstance(PerformJenkinsLinterAction::class.java).debug(linterResponse.message)

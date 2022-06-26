@@ -21,6 +21,7 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
         val settings = getSettings()
         val modified = settings.jenkinsUrl != component.jenkinsUrl ||
             settings.trustSelfSigned != component.trustSelfSigned ||
+            settings.ignoreCertificate != component.ignoreCertificate ||
             settings.useCrumbIssuer != component.useCrumbIssuer
 
         if (modified) {
@@ -43,6 +44,7 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
         } else jenkinsUrl
 
         settings.trustSelfSigned = component.trustSelfSigned
+        settings.ignoreCertificate = component.ignoreCertificate
         settings.useCrumbIssuer = component.useCrumbIssuer
 
         val credentials = component.credentials
@@ -65,6 +67,7 @@ class JenkinsLinterConfigurable : SearchableConfigurable {
         val settings = getSettings()
         component.jenkinsUrl = settings.jenkinsUrl
         component.trustSelfSigned = settings.trustSelfSigned
+        component.ignoreCertificate = settings.ignoreCertificate
         component.useCrumbIssuer = settings.useCrumbIssuer
         component.credentials = JenkinsLinterCredentials.get()
     }

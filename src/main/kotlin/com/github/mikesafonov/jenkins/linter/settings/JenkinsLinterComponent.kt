@@ -18,6 +18,7 @@ class JenkinsLinterComponent {
     val panel: JPanel
     private var jenkinsUrlTextField: JTextField = JTextField()
     private var trustSelfSignedCheckbox: JCheckBox = JCheckBox()
+    private var ignoreCertificateCheckbox: JCheckBox = JCheckBox()
     private var verifyButton = JButton("Check connection")
     private var usernameTextField: JTextField = JTextField()
     private var passwordTextField: JPasswordField = JPasswordField()
@@ -32,6 +33,11 @@ class JenkinsLinterComponent {
         get() = trustSelfSignedCheckbox.isSelected
         set(value) {
             trustSelfSignedCheckbox.isSelected = value
+        }
+    var ignoreCertificate: Boolean
+        get() = ignoreCertificateCheckbox.isSelected
+        set(value) {
+            ignoreCertificateCheckbox.isSelected = value
         }
     var useCrumbIssuer: Boolean
         get() = useCrumbIssuerCheckbox.isSelected
@@ -60,6 +66,7 @@ class JenkinsLinterComponent {
         panel = FormBuilder.createFormBuilder()
             .addLabeledComponent(JBLabel("Jenkins url (protocol://hostname:port):"), jenkinsUrlTextField, 1, false)
             .addLabeledComponent(JBLabel("Trust self-signed:"), trustSelfSignedCheckbox, 1, false)
+            .addLabeledComponent(JBLabel("Ignore certificate:"), ignoreCertificateCheckbox, 1, false)
             .addLabeledComponent(JBLabel("Username:"), usernameTextField, 1, false)
             .addLabeledComponent(JBLabel("Password/Token:"), passwordTextField, 1, false)
             .addLabeledComponent(JBLabel("Use crumb issuer:"), useCrumbIssuerCheckbox, 1, false)
@@ -80,7 +87,7 @@ class JenkinsLinterComponent {
         }
         val test = JenkinsCheckConnectionTask(
             jenkinsUrlTextField.text,
-            trustSelfSignedCheckbox.isSelected, credentials
+            trustSelfSignedCheckbox.isSelected, ignoreCertificateCheckbox.isSelected, credentials
         )
         ProgressManager.getInstance().run(test)
         if (test.success) {

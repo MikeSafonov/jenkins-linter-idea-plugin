@@ -8,12 +8,22 @@ import com.intellij.credentialStore.Credentials
  */
 object JenkinsServerFactory {
 
-    fun get(url: String, trustSelfSigned: Boolean = true, useCrumbIssuer: Boolean = false): JenkinsServer {
+    fun get(
+        url: String,
+        trustSelfSigned: Boolean = true,
+        ignoreCertificate: Boolean = false,
+        useCrumbIssuer: Boolean = false
+    ): JenkinsServer {
         val credentials = JenkinsLinterCredentials.get()
-        return JenkinsServerImpl(url, trustSelfSigned, credentials, useCrumbIssuer)
+        return JenkinsServerImpl(url, trustSelfSigned, ignoreCertificate, credentials, useCrumbIssuer)
     }
 
-    fun get(url: String, trustSelfSigned: Boolean = true, credentials: Credentials?): JenkinsServer {
-        return JenkinsServerImpl(url, trustSelfSigned, credentials)
+    fun get(
+        url: String,
+        trustSelfSigned: Boolean = true,
+        ignoreCertificate: Boolean = false,
+        credentials: Credentials?
+    ): JenkinsServer {
+        return JenkinsServerImpl(url, trustSelfSigned, ignoreCertificate, credentials)
     }
 }
